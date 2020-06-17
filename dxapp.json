@@ -1,0 +1,136 @@
+{
+  "name": "ampliconfilter_v1.0",
+  "title": "ampliconfilter_v1.0",
+  "summary": "softclip primers and remove reads not expected from the provided primers",
+  "tags": [
+  ],
+  "properties": {
+    "github release": "v1.0"
+  },
+  "dxapi": "1.0.0",
+  "inputSpec": [
+    {
+      "name": "BAM",
+      "label": "BAM",
+      "help": "BAM file to soft clip",
+      "class": "file",
+      "optional": false
+    },
+    {
+      "name": "BEDPE",
+      "label": "Paired end BED file",
+      "help": "BEDPE file containing the primer pairs",
+      "class": "file",
+      "optional": false
+    },
+    {
+      "name": "clipping",
+      "label": "clipping",
+      "help": "0=noclip, 1=softclip (default), 2=hardclip",
+      "class": "string",
+      "default": "1",
+      "choices": ["1", "2", "0"]
+    },
+    {
+      "name": "super",
+      "label": "Include superamplicons",
+      "help": "Allows all primer combinations",
+      "class": "boolean",
+      "optional": false,
+      "default": true
+    },
+    {
+      "name": "mask",
+      "label": "mask",
+      "help": "Sequence Hardmasking",
+      "class": "boolean",
+      "optional": false,
+      "default": false
+    },
+    {
+      "name": "primerdistance",
+      "label": "primer distance",
+      "help": " maximum distance from nearest possible primer, default = 0",
+      "class": "string",
+      "optional": true
+    },
+    {
+      "name": "tolerance",
+      "label": "tolerance",
+      "help": " detection end tolerance, default = 0",
+      "class": "string",
+      "optional": true
+    },
+    {
+      "name": "maxbuffer",
+      "label": "maxbuffer",
+      "help": "maximum read buffer size, default = 100000",
+      "class": "string",
+      "optional": true
+    },
+    {
+      "name": "extratrim",
+      "label": "extratrim",
+      "help": "additional trimming after primer, default = 0",
+      "class": "string",
+      "optional": true
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "clipped_BAM",
+      "label": "primer clipped BAM",
+      "help": "Sorted, primer clipped BAM",
+      "class": "file"
+    },
+    {
+      "name": "clipped_BAM_BAI",
+      "label": "primer clipped BAM index",
+      "help": "index of sorted, primer clipped BAM",
+      "class": "file"
+    },
+    {
+      "name": "discarded_BAM",
+      "label": "discarded_BAM",
+      "help": "BAM containing discarded reads",
+      "class": "file"
+    },
+    {
+      "name": "discarded_BAM_BAI",
+      "label": "discarded_BAM_index",
+      "help": "index of BAM containing discarded reads",
+      "class": "file"
+    },
+    {
+      "name": "metrics",
+      "label": "metrics file",
+      "help": "metrics file",
+      "class": "file"
+    }
+  ],
+  "runSpec": {
+    "execDepends": [
+    ],
+    "distribution" : "Ubuntu",
+    "release":"16.04",
+    "file": "src/code.sh",
+    "interpreter": "bash",
+    "assetDepends": [
+    ]
+  },
+  "access": {
+    "allProjects":"UPLOAD",
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "main": {
+          "instanceType": "mem1_ssd1_x2"
+        }
+      }
+    }
+  }
+}
