@@ -23,7 +23,7 @@
       "help": "BEDPE file containing the primer pairs",
       "class": "file",
       "optional": false,
-      "patterns": ["*.BED"]
+      "patterns": ["*.bed"]
     },
     {
       "name": "clipping",
