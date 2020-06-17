@@ -14,14 +14,16 @@
       "label": "BAM",
       "help": "BAM file to soft clip",
       "class": "file",
-      "optional": false
+      "optional": false,
+      "patterns": ["*.bam"]
     },
     {
       "name": "BEDPE",
       "label": "Paired end BED file",
       "help": "BEDPE file containing the primer pairs",
       "class": "file",
-      "optional": false
+      "optional": false,
+      "patterns": ["*.BED"]
     },
     {
       "name": "clipping",
