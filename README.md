@@ -11,7 +11,7 @@ Fragments which match the expected amplicons have the primer sequences removed f
 
 Any fragments which do not originate from one of these expected amplicons are filtered into the discarded BAM file.
 
-This tool is used instead of other tools (such as BAMclipper) because it will only remove primers from the ends of fragments. 
+This tool replaced BAMclipper as BAMclipper was found to be clipping more bases than expected and did not take into account super amplicons. 
 
 ## What inputs are required for this app to run?
 * BAM (file) - A BAM file
@@ -31,7 +31,7 @@ The parameters/flag inputs described above are concatenated into a string.
 
 The ampliconfilter docker file is loaded and run (the version of ampliconFilter code applied in this app is listed above).
 
-AmpliconFilter produces 2 BAM files, one containing discareded reads and another containing reads which matches expected amplicons. These BAM files are sorted and indexed using samtools (v0.1.19-44428cd)
+AmpliconFilter produces 2 BAM files, one containing discarded reads and another containing reads which match expected amplicons. These BAM files are sorted and indexed using samtools (v0.1.19-44428cd)
 
 
 ## What does this app output
