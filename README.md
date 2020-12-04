@@ -21,7 +21,7 @@ This tool replaced BAMclipper as BAMclipper was found to be clipping more bases 
 * mask (Boolean) -  which sequence Hardmasking, default False
 * primer distance (int) - string maximum distance from nearest possible primer, default = 0
 * tolerance (int) - detection end tolerance, default = 0
-* maxbuffer (int) - maximum read buffer size, default = 100000
+* maxbuffer (int) - maximum read buffer size, default (when not stated) = 100000. App default is 1000000.
 * extratrim (int) - additional trimming after primer, default = 0
 
 ## How does this app work?
