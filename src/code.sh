@@ -58,6 +58,10 @@ mv genome.fa input_files/
 mv $BEDPE_path input_files/
 mv $BAM_path input_files/
 
+# sort input bam by name and move to input folder - this improves speed and may prevent buffer issues with amplicon filter 
+samtools sort -n input_files/$BAM_name namesorted 
+mv namesorted.bam input_files/
+
 # download the docker file from 001
 dx download project-ByfFPz00jy1fk6PjpZ95F27J:file-FqZvbxj0jy1vvFxvJP6pqKq7 --auth ${API_KEY}
 # decompress docker image
@@ -68,7 +72,7 @@ docker load  --input AmpliconFilter_v1.0.tar
 # pass the BEDPE, BAM and reference genome files as inputs, along with $opts string
 # name output BAMS with generic names as these will be renamed when sorting and indexing.
 # output metrics will be named using the samplename
-docker run -v /home/dnanexus/input_files:/sandbox ampliconfilter:1.0 /sandbox/$BEDPE_name -i /sandbox/$BAM_name -g /sandbox/genome.fa $opts -o /sandbox/primerclipped.bam  -d /sandbox/discarded.bam  -m /sandbox/$samplename.refined.primerclipped.metrics
+docker run -v /home/dnanexus/input_files:/sandbox ampliconfilter:1.0 /sandbox/$BEDPE_name -i /sandbox/namesorted.bam -g /sandbox/genome.fa $opts -o /sandbox/primerclipped.bam  -d /sandbox/discarded.bam  -m /sandbox/$samplename.refined.primerclipped.metrics
 
 # Downstream tools *may* need indexed BAMs. To index BAMs first need to sort.
 # sort BAM and give prefix sorted (created sorted.bam)
