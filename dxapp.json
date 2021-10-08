@@ -1,11 +1,11 @@
 {
-  "name": "ampliconfilter_v1.0",
-  "title": "ampliconfilter_v1.0",
+  "name": "ampliconfilter_v1.1",
+  "title": "ampliconfilter_v1.1",
   "summary": "softclip primers and remove reads not expected from the provided primers",
   "tags": [
   ],
   "properties": {
-    "github release": "v1.0"
+    "github release": "v1.1"
   },
   "dxapi": "1.0.0",
   "inputSpec": [
@@ -116,6 +116,7 @@
     ],
     "distribution" : "Ubuntu",
     "release":"16.04",
+	"version": "0",
     "file": "src/code.sh",
     "interpreter": "bash",
     "assetDepends": [

@@ -1,8 +1,7 @@
-# ampliconFilter v1.0
+# ampliconFilter v1.1
 
 ## What does this app do?
-This app runs [AmpliconFilter v1.0](https://github.com/moka-guys/ampliconfilter/tree/v1.0) to remove any alignments which are not the product of an amplicon.
-
+This app runs [AmpliconFilter v1.0.1](https://github.com/moka-guys/ampliconfilter/tree/v1.0.1_release) to remove any alignments which are not the product of an amplicon.
 
 ## What are typical use cases for this app?
 Amplicons can be formed from pairs of primers that were designed to create an amplicon and from 'super' amplicons, created from primers from neighbouring amplicons (see the --super flag).
@@ -32,7 +31,6 @@ The parameters/flag inputs described above are concatenated into a string.
 The ampliconfilter docker file is loaded and run (the version of ampliconFilter code applied in this app is listed above).
 
 AmpliconFilter produces 2 BAM files, one containing discarded reads and another containing reads which match expected amplicons. These BAM files are sorted and indexed using samtools (v0.1.19-44428cd)
-
 
 ## What does this app output
 * clipped_BAM - sorted BAM file (output to /output)
