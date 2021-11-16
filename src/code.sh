@@ -55,24 +55,38 @@ samplename=${BAM_name%%.*}
 
 # move the inputs into the dir which will be mounted in the docker image.
 mv genome.fa input_files/
-mv $BEDPE_path input_files/
+mv $PE_BED_path input_files/
 mv $BAM_path input_files/
 
 # sort input bam by name and move to input folder - this improves speed and may prevent buffer issues with amplicon filter 
 samtools sort -n input_files/$BAM_name namesorted 
 mv namesorted.bam input_files/
 
-# download the docker file from 001
-dx download project-ByfFPz00jy1fk6PjpZ95F27J:file-G5PVyFj0jy1fP4zJ3Bgq3vx2 --auth ${API_KEY}
+# download the docker file from 003_211029_amplicon_filter_v1.2
+dx download project-G5xzqJ000yZXVZ2j3QJ2QG6f:file-G5y1JJ800yZVvQ0875zzQQpZ --auth ${API_KEY}
 
 # load docker image
-docker load  --input ampliconfilter_v1.0.1.tar
-# docker run. mount input directory as /sandbox - all inputs were moved there earlier, and all outputs will be saved there
-# pass the BEDPE, BAM and reference genome files as inputs, along with $opts string
-# name output BAMS with generic names as these will be renamed when sorting and indexing.
-# output metrics will be named using the samplename
-docker run -v /home/dnanexus/input_files:/sandbox ampliconfilter:v1.0.1 /sandbox/$BEDPE_name -i /sandbox/namesorted.bam -g /sandbox/genome.fa $opts -o /sandbox/primerclipped.bam  -d /sandbox/discarded.bam  -m /sandbox/$samplename.refined.primerclipped.metrics
+docker load  --input ampliconfilter_v1.0.2.tar
 
+#docker run -v /home/dnanexus/input_files:/sandbox ampliconfilter:v1.0.2 
+
+docker run -v /home/dnanexus/input_files:/sandbox -i ampliconfilter:v1.0.2 bash convert_bedpe_to_bed.sh /sandbox/$PE_BED_name > input_files/$PE_BED_prefix.bedpe
+less input_files/$PE_BED_prefix.bedpe
+if [ "$samclip_ampliconfilter" == "ampliconFilter" ]; then
+	# run ampliconFilter script
+	# docker run. mount input directory as /sandbox - all inputs were moved there earlier, and all outputs will be saved there
+	# pass the input PE_BED, BAM and reference genome files as inputs, along with $opts string
+	# name output BAMS with generic names as these will be renamed when sorting and indexing.
+	# output metrics will be named using the samplename
+	docker run -i -v /home/dnanexus/input_files:/sandbox -v /home/dnanexus/out/metrics/QC/:/metrics_out ampliconfilter:v1.0.2 python ampliconFilter.py /sandbox/$PE_BED_name -i /sandbox/namesorted.bam -g /sandbox/genome.fa $opts -o /sandbox/primerclipped.bam  -d /sandbox/discarded.bam  -m /metrics_out/$samplename.refined.primerclipped.metrics
+else
+	# run samtools primerclip script
+	# docker run. mount input directory as /sandbox - all inputs were moved there earlier, and all outputs will be saved there
+	# pass the newly made .bedpe file and BAM 
+	# name output BAMS with generic names as these will be renamed when sorting and indexing
+	# write the output to both 
+	docker run -i -v /home/dnanexus/input_files:/sandbox ampliconfilter:v1.0.2 python samclip.py /sandbox/$PE_BED_prefix.bedpe /sandbox/namesorted.bam -o /sandbox/primerclipped.bam  -r /sandbox/discarded.bam 2> >(tee -a out/metrics/QC/$samplename.refined.primerclipped.metrics >&2)
+fi
 # Downstream tools *may* need indexed BAMs. To index BAMs first need to sort.
 # sort BAM and give prefix sorted (created sorted.bam)
 samtools sort input_files/primerclipped.bam sorted
@@ -89,9 +103,6 @@ mv sorted.discarded.bam out/discarded_BAM/output/$samplename.refined.primerclipp
 # index sorted bam and move index into own output folder
 samtools index out/discarded_BAM/output/$samplename.refined.primerclippeddiscarded.bam 
 mv out/discarded_BAM/output/$samplename.refined.primerclippeddiscarded.bam.bai out/discarded_BAM_BAI/output/$samplename.refined.primerclippeddiscarded.bam.bai
-
-# move the metrics file into the output folder
-mv input_files/$samplename.refined.primerclipped.metrics out/metrics/QC/
 
 # upload all outputs
 dx-upload-all-outputs --parallel
