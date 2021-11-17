@@ -68,11 +68,6 @@ dx download project-ByfFPz00jy1fk6PjpZ95F27J:file-G5y1JJ800yZVvQ0875zzQQpZ --aut
 # load docker image
 docker load  --input ampliconfilter_v1.0.2.tar
 
-#docker run -v /home/dnanexus/input_files:/sandbox ampliconfilter:v1.0.2 
-
-docker run -v /home/dnanexus/input_files:/sandbox -i ampliconfilter:v1.0.2 bash convert_bedpe_to_bed.sh /sandbox/$PE_BED_name > input_files/$PE_BED_prefix.bedpe
-less input_files/$PE_BED_prefix.bedpe
-
 # run ampliconFilter script
 # docker run. mount input directory as /sandbox - all inputs were moved there earlier, and all outputs will be saved there
 # pass the input PE_BED, BAM and reference genome files as inputs, along with $opts string
