@@ -1,11 +1,11 @@
 {
-  "name": "ampliconfilter_v1.1",
-  "title": "ampliconfilter_v1.1",
+  "name": "ampliconfilter_v1.2",
+  "title": "ampliconfilter_v1.2",
   "summary": "softclip primers and remove reads not expected from the provided primers",
   "tags": [
   ],
   "properties": {
-    "github release": "v1.1"
+    "github release": "v1.2"
   },
   "dxapi": "1.0.0",
   "inputSpec": [
@@ -14,19 +14,22 @@
       "label": "BAM",
       "help": "BAM file to soft clip",
       "class": "file",
+	  "group": "AmpliconFilter",
       "optional": false,
       "patterns": ["*.bam"]
     },
     {
-      "name": "BEDPE",
+      "name": "PE_BED",
       "label": "Paired end BED file",
-      "help": "BEDPE file containing the primer pairs",
+      "help": "PE_BED file containing the primer pairs",
       "class": "file",
       "optional": false,
-      "patterns": ["*.bed"]
+      "patterns": ["*.bed"],
+	  "group": "AmpliconFilter"
     },
     {
-      "name": "clipping",
+	  "group": "AmpliconFilter",
+	  "name": "clipping",
       "label": "clipping",
       "help": "0=noclip, 1=softclip (default), 2=hardclip",
       "class": "string",
@@ -34,7 +37,8 @@
       "choices": ["1", "2", "0"]
     },
     {
-      "name": "super",
+	  "group": "AmpliconFilter",
+	  "name": "super",
       "label": "Include superamplicons",
       "help": "Allows all primer combinations",
       "class": "boolean",
@@ -42,7 +46,9 @@
       "default": true
     },
     {
-      "name": "mask",
+      
+	  "group": "AmpliconFilter",
+	  "name": "mask",
       "label": "mask",
       "help": "Sequence Hardmasking",
       "class": "boolean",
@@ -51,6 +57,7 @@
     },
     {
       "name": "primerdistance",
+	  "group": "AmpliconFilter",
       "label": "primer distance",
       "help": " maximum distance from nearest possible primer, default = 0",
       "class": "string",
@@ -60,6 +67,7 @@
       "name": "tolerance",
       "label": "tolerance",
       "help": " detection end tolerance, default = 0",
+	  "group": "AmpliconFilter",
       "class": "string",
       "optional": true
     },
@@ -68,6 +76,7 @@
       "label": "maxbuffer",
       "help": "maximum read buffer size, default = 100000 (when not provided)",
       "default": "10000000",
+	  "group": "AmpliconFilter",
       "class": "string",
       "optional": true
     },
@@ -76,6 +85,7 @@
       "label": "extratrim",
       "help": "additional trimming after primer, default = 0",
       "class": "string",
+	  "group": "AmpliconFilter",
       "optional": true
     }
   ],
@@ -108,7 +118,8 @@
       "name": "metrics",
       "label": "metrics file",
       "help": "metrics file",
-      "class": "file"
+      "class": "file",
+	  "optional": true
     }
   ],
   "runSpec": {

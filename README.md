@@ -1,7 +1,7 @@
-# ampliconFilter v1.1
+# ampliconFilter v1.2
 
 ## What does this app do?
-This app runs [AmpliconFilter v1.0.1](https://github.com/moka-guys/ampliconfilter/tree/v1.0.1_release) to remove any alignments which are not the product of an amplicon.
+This app runs [AmpliconFilter v1.0.2](https://github.com/moka-guys/ampliconfilter/tree/v1.0.2_with_docker) to remove any alignments which are not the product of an amplicon.
 
 ## What are typical use cases for this app?
 Amplicons can be formed from pairs of primers that were designed to create an amplicon and from 'super' amplicons, created from primers from neighbouring amplicons (see the --super flag).
@@ -11,6 +11,8 @@ Fragments which match the expected amplicons have the primer sequences removed f
 Any fragments which do not originate from one of these expected amplicons are filtered into the discarded BAM file.
 
 This tool replaced BAMclipper as BAMclipper was found to be clipping more bases than expected and did not take into account super amplicons. 
+
+AmpliconFilter v1.0.2 applied here offers two approaches, samclip (samtools ampliconclip) and ampliconfilter. After validation the ampliconfilter option was found to better and so samclip option is not supported by this app.
 
 ## What inputs are required for this app to run?
 * BAM (file) - A BAM file

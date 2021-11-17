@@ -55,23 +55,25 @@ samplename=${BAM_name%%.*}
 
 # move the inputs into the dir which will be mounted in the docker image.
 mv genome.fa input_files/
-mv $BEDPE_path input_files/
+mv $PE_BED_path input_files/
 mv $BAM_path input_files/
 
 # sort input bam by name and move to input folder - this improves speed and may prevent buffer issues with amplicon filter 
 samtools sort -n input_files/$BAM_name namesorted 
 mv namesorted.bam input_files/
 
-# download the docker file from 001
-dx download project-ByfFPz00jy1fk6PjpZ95F27J:file-G5PVyFj0jy1fP4zJ3Bgq3vx2 --auth ${API_KEY}
+# download the docker file from 001_Tools...
+dx download project-ByfFPz00jy1fk6PjpZ95F27J:file-G5y1JJ800yZVvQ0875zzQQpZ --auth ${API_KEY}
 
 # load docker image
-docker load  --input ampliconfilter_v1.0.1.tar
+docker load  --input ampliconfilter_v1.0.2.tar
+
+# run ampliconFilter script
 # docker run. mount input directory as /sandbox - all inputs were moved there earlier, and all outputs will be saved there
-# pass the BEDPE, BAM and reference genome files as inputs, along with $opts string
+# pass the input PE_BED, BAM and reference genome files as inputs, along with $opts string
 # name output BAMS with generic names as these will be renamed when sorting and indexing.
 # output metrics will be named using the samplename
-docker run -v /home/dnanexus/input_files:/sandbox ampliconfilter:v1.0.1 /sandbox/$BEDPE_name -i /sandbox/namesorted.bam -g /sandbox/genome.fa $opts -o /sandbox/primerclipped.bam  -d /sandbox/discarded.bam  -m /sandbox/$samplename.refined.primerclipped.metrics
+docker run -i -v /home/dnanexus/input_files:/sandbox -v /home/dnanexus/out/metrics/QC/:/metrics_out ampliconfilter:v1.0.2 python ampliconFilter.py /sandbox/$PE_BED_name -i /sandbox/namesorted.bam -g /sandbox/genome.fa $opts -o /sandbox/primerclipped.bam  -d /sandbox/discarded.bam  -m /metrics_out/$samplename.refined.primerclipped.metrics
 
 # Downstream tools *may* need indexed BAMs. To index BAMs first need to sort.
 # sort BAM and give prefix sorted (created sorted.bam)
@@ -89,9 +91,6 @@ mv sorted.discarded.bam out/discarded_BAM/output/$samplename.refined.primerclipp
 # index sorted bam and move index into own output folder
 samtools index out/discarded_BAM/output/$samplename.refined.primerclippeddiscarded.bam 
 mv out/discarded_BAM/output/$samplename.refined.primerclippeddiscarded.bam.bai out/discarded_BAM_BAI/output/$samplename.refined.primerclippeddiscarded.bam.bai
-
-# move the metrics file into the output folder
-mv input_files/$samplename.refined.primerclipped.metrics out/metrics/QC/
 
 # upload all outputs
 dx-upload-all-outputs --parallel
