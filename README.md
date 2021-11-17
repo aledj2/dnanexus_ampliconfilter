@@ -1,7 +1,7 @@
 # ampliconFilter v1.2
 
 ## What does this app do?
-This app runs [AmpliconFilter v1.0.2](https://github.com/moka-guys/ampliconfilter/tree/v1.0.2_release) to remove any alignments which are not the product of an amplicon.
+This app runs [AmpliconFilter v1.0.2](https://github.com/moka-guys/ampliconfilter/tree/v1.0.2_with_docker) to remove any alignments which are not the product of an amplicon.
 
 ## What are typical use cases for this app?
 Amplicons can be formed from pairs of primers that were designed to create an amplicon and from 'super' amplicons, created from primers from neighbouring amplicons (see the --super flag).
