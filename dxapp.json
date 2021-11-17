@@ -1,11 +1,11 @@
 {
-  "name": "ampliconfilter_v2.0",
-  "title": "ampliconfilter_v2.0",
+  "name": "ampliconfilter_v1.2",
+  "title": "ampliconfilter_v1.2",
   "summary": "softclip primers and remove reads not expected from the provided primers",
   "tags": [
   ],
   "properties": {
-    "github release": "v2.0"
+    "github release": "v1.2"
   },
   "dxapi": "1.0.0",
   "inputSpec": [
@@ -87,19 +87,7 @@
       "class": "string",
 	  "group": "AmpliconFilter",
       "optional": true
-    },
-	{
-	  "name": "samclip_ampliconfilter",
-	  "label": "samclip or amplicon filter?",
-	  "help": "Which algorithm to apply?",
-	  "class": "string",
-	  "choices": [
-		"ampliconFilter",
-		"samclip"
-	  ],
-	  "default": "ampliconFilter",
-	  "group": "Tool choice"
-	  }
+    }
   ],
   "outputSpec": [
     {
